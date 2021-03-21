@@ -22,3 +22,16 @@ config :flyio_libcluster_example, FlyioLibclusterExampleWeb.Endpoint, server: tr
 #
 # Then you can assemble a release by calling `mix release`.
 # See `mix help release` for more information.
+app_name = System.fetch_env!("FLY_APP_NAME")
+
+config :libcluster,
+  topologies: [
+    fly6pn: [
+      strategy: Elixir.Cluster.Strategy.DNSPoll,
+      config: [
+        polling_interval: 5_000,
+        query: "#{app_name}.internal",
+        node_basename: app_name
+      ]
+    ]
+  ]

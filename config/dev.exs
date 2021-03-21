@@ -56,6 +56,16 @@ config :flyio_libcluster_example, FlyioLibclusterExampleWeb.Endpoint,
     ]
   ]
 
+config :libcluster,
+  topologies: [
+    example: [
+      # The selected clustering strategy. Required.
+      strategy: Cluster.Strategy.Epmd,
+      # Configuration for the provided strategy. Optional.
+      config: [hosts: []]
+    ]
+  ]
+
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
 

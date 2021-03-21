@@ -15,7 +15,12 @@ defmodule FlyioLibclusterExample.Application do
       FlyioLibclusterExampleWeb.Endpoint,
       # Start a worker by calling: FlyioLibclusterExample.Worker.start_link(arg)
       # {FlyioLibclusterExample.Worker, arg}
-      FlyioLibclusterExample.Region
+      FlyioLibclusterExample.Region,
+      {Cluster.Supervisor,
+       [
+         Application.get_env(:libcluster, :topologies),
+         [name: FlyioLibclusterExample.ClusterSupervisor]
+       ]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
