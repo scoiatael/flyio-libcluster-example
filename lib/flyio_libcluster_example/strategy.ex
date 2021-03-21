@@ -1,21 +1,34 @@
 defmodule FlyioLibclusterExample.Strategy do
   @moduledoc """
-  Assumes you have nodes that respond to the specified DNS query (A record), and which follow the node name pattern of
-  `<name>@<ip-address>`. If your setup matches those assumptions, this strategy will periodically poll DNS and connect
+  Assumes you have nodes deployed on https://fly.io. Private network has to be enabled in `fly.toml` with
+  ```
+  [experimental]
+  private_network = true
+  ```
+  and your release should listen on fly-assigned IPv6 address - configurable by
+  1) running `mix release.init`,
+  2) changing `rel/env.sh.eex` to contain:
+  ```
+  export RELEASE_DISTRIBUTION=name
+  export RELEASE_NODE="<%= @release.name %>@$(grep fly-local-6pn /etc/hosts | cut -f 1)"
+  ```
+  3) adding to `rel/vm.args.eex`:
+  ```
+  -proto_dist inet6_tcp
+  ```
+
+  If your setup matches those assumptions, this strategy will periodically poll DNS and connect
   all nodes it finds.
   ## Options
   * `poll_interval` - How often to poll in milliseconds (optional; default: 5_000)
-  * `query` - DNS query to use (required; e.g. "my-app.example.com")
-  * `node_basename` - The short name of the nodes you wish to connect to (required; e.g. "my-app")
+  * `query` - DNS query to use (optional; default: "<fly app name>.internal")
+  * `node_basename` - The short name of the nodes you wish to connect to (optional; default: release name)
   ## Usage
       config :libcluster,
         topologies: [
-          dns_poll_example: [
+          fly6pn: [
             strategy: #{__MODULE__},
-            config: [
-              polling_interval: 5_000,
-              query: "my-app.example.com",
-              node_basename: "my-app"]]]
+            config: []]]
   """
 
   alias Cluster.Strategy.{State, DNSPoll}
