@@ -1,0 +1,24 @@
+<section class="phx-hero">
+  <h1><%= gettext "Welcome to %{name}!", name: "fly.io libcluster example" %></h1>
+  <p>Easy clustering on <a href="https://fly.io">fly.io</a> out of the box</p>
+</section>
+
+<section class="row">
+  <article class="column">
+    <table>
+        <tr>
+            <th>Connected to</th>
+            <th>Region</th>
+        </tr>
+        <%= for {k, v} <- @nodes do %>
+        <tr>
+          <td><%= k %></td>
+          <th class="region">
+            <img src="https://fly.io/ui/images/<%= v %>.svg" />
+            <%= v %>
+          </th>
+        </tr>
+        <% end %>
+    </table>
+  </article>
+</section>

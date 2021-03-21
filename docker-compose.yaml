@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  webapp:
+    build: .
+    environment:
+      FLY_REGION: ams
+      SECRET_KEY_BASE: sVGaiNvXOByEZSCylz9t10xPPMVCDZ8SmFvRCUR0MqKypHEKjb01pwdG/msDjj1c
+      FLY_APP_NAME: flyio-libcluster-example
+      ENDPOINT_URL_HOST: "127.0.0.1"
+      ENDPOINT_URL_PORT: "4000"
+    ports:
+      - 127.0.0.1:4000:4000
